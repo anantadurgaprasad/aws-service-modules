@@ -65,7 +65,7 @@ resource "aws_eip" "nat_eip" {
 }
 resource "aws_nat_gateway" "nat" {
   count         = var.create_nat ? 1 : 0
-  allocation_id = aws_eip.nat_eip.id
+  allocation_id = aws_eip.nat_eip[0].id
   subnet_id     = aws_subnet.public_subnets[var.public_subnets[0]].id
   depends_on    = [aws_internet_gateway.gw]
 
