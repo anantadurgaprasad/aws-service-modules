@@ -24,6 +24,6 @@ resource "aws_kms_key" "eks-cluster-kms-key" {
 }
 
 resource "aws_kms_alias" "eks-cluster-kms-alias" {
-  name          = "alias/${var.environment}-${var.app_name}-eks-kmss"
+  name          = "alias/${var.environment}-${var.app_name}-eks-kms"
   target_key_id = aws_kms_key.eks-cluster-kms-key.key_id
 }
