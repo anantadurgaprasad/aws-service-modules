@@ -1,17 +1,13 @@
 /*=========
-IAM role for aws-node ( VPC CNI pods) 
-This is role will be used by service account aws-node associated to aws-node pods which 
-needs IAM permissions to spin up eks node 
+IAM role for aws-node ( VPC CNI pods)
+This is role will be used by service account aws-node associated to aws-node pods which
+needs IAM permissions to spin up eks node
 ===========*/
-data "aws_caller_identity" "current" {}
-data "aws_region" "current" {}
 
-
-
-resource "aws_eks_node_group" "eks-node" {
-  cluster_name    = aws_eks_cluster.eks-cluster.name
+resource "aws_eks_node_group" "eks_node" {
+  cluster_name    = aws_eks_cluster.eks_cluster.name
   node_group_name = "${var.environment}-${var.app_name}-eks-node"
-  node_role_arn   = aws_iam_role.eks-node-role.arn
+  node_role_arn   = aws_iam_role.eks_node_role.arn
   subnet_ids      = var.subnet_ids
   tags = merge(var.tags, {
     Name = "${var.environment}-${var.app_name}-eks-nodegroup"
@@ -35,16 +31,11 @@ resource "aws_eks_node_group" "eks-node" {
   }
 
   depends_on = [
-    aws_iam_role.eks-node-role
+    aws_iam_role.eks_node_role
   ]
 }
 
-data "aws_kms_alias" "ebs" {
-  name = "alias/aws/ebs"
-}
-
-
-data "aws_iam_policy_document" "eks-node-role-policy" {
+data "aws_iam_policy_document" "eks_node_role_policy" {
   statement {
     actions = ["sts:AssumeRole"]
 
@@ -55,10 +46,10 @@ data "aws_iam_policy_document" "eks-node-role-policy" {
   }
 }
 
-resource "aws_iam_role" "eks-node-role" {
+resource "aws_iam_role" "eks_node_role" {
   name               = "${var.environment}-${var.app_name}-eks-node-role"
   path               = "/"
-  assume_role_policy = data.aws_iam_policy_document.eks-node-role-policy.json
+  assume_role_policy = data.aws_iam_policy_document.eks_node_role_policy.json
   tags = merge(var.tags, {
     Name = "${var.environment}-${var.app_name}-eks-iam-role"
   })
@@ -68,8 +59,8 @@ resource "aws_iam_role" "eks-node-role" {
 }
 
 
-resource "aws_iam_role_policy_attachment" "eks-node-role-policy-attach" {
-  role       = aws_iam_role.eks-node-role.name
+resource "aws_iam_role_policy_attachment" "eks_node_role_policy_attach" {
+  role       = aws_iam_role.eks_node_role.name
   count      = length(compact(concat(var.node_policies, local.node_policies)))
   policy_arn = compact(concat(var.node_policies, local.node_policies))[count.index]
 }

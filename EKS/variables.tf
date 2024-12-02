@@ -20,13 +20,19 @@ variable "eks_version" {
   type        = string
 }
 variable "cni_version" {
-  default = null
+  default     = null
+  type        = string
+  description = "Version of the Addon"
 }
 variable "proxy_version" {
-  default = null
+  default     = null
+  type        = string
+  description = "Version of the Addon"
 }
 variable "coredns_version" {
-  default = null
+  default     = null
+  type        = string
+  description = "Version of the Addon"
 }
 variable "subnet_ids" {
   description = "The Subnet Ids on which EKS Cluster will be created"

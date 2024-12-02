@@ -1,4 +1,4 @@
-resource "aws_kms_key" "eks-cluster-kms-key" {
+resource "aws_kms_key" "eks_cluster_kms_key" {
   description              = "KMS key for EKS Cluster"
   customer_master_key_spec = "SYMMETRIC_DEFAULT"
   is_enabled               = true
@@ -23,7 +23,7 @@ resource "aws_kms_key" "eks-cluster-kms-key" {
 
 }
 
-resource "aws_kms_alias" "eks-cluster-kms-alias" {
+resource "aws_kms_alias" "eks_cluster_kms_alias" {
   name          = "alias/${var.environment}-${var.app_name}-eks-kms"
-  target_key_id = aws_kms_key.eks-cluster-kms-key.key_id
+  target_key_id = aws_kms_key.eks_cluster_kms_key.key_id
 }
