@@ -11,14 +11,14 @@ data "aws_iam_policy_document" "instance_assume_role_policy" {
       identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/${var.oidc_provider}"]
     }
     condition {
-      test = "StringEquals"
+      test     = "StringEquals"
       variable = "${var.oidc_provider}:aud"
-      values = ["sts.amazonaws.com"]
+      values   = ["sts.amazonaws.com"]
     }
     condition {
-      test = "StringEquals"
+      test     = "StringEquals"
       variable = "${var.oidc_provider}:sub"
-      values = ["system:serviceaccount:${var.namespace}:${var.service_account}"]
+      values   = ["system:serviceaccount:${var.namespace}:${var.service_account}"]
     }
   }
 }
@@ -26,13 +26,13 @@ data "aws_iam_policy_document" "instance_assume_role_policy" {
 
 
 resource "aws_iam_role" "role" {
-  name = var.role_name
-  tags = merge(local.tags, var.tags)
+  name               = var.role_name
+  tags               = merge(local.tags, var.tags)
   assume_role_policy = data.aws_iam_policy_document.instance_assume_role_policy.json
 }
 
 resource "aws_iam_role_policy_attachment" "policy_attachment" {
-  for_each = set(var.policy_arns)
+  for_each   = toset(var.policy_arns)
   role       = aws_iam_role.role.name
   policy_arn = each.key
 }
