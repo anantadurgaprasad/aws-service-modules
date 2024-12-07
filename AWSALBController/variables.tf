@@ -18,10 +18,7 @@ variable "cluster_name" {
   type        = string
   description = "EKS Cluster Name"
 }
-variable "irsa_role_arn" {
-  type        = string
-  description = "IRSA Name"
-}
+
 variable "helm_values" {
   type        = any
   description = "Helm Chart Values in yaml content"
