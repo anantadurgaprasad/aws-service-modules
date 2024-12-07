@@ -20,7 +20,7 @@ variable "cluster_name" {
 }
 
 variable "helm_values" {
-  type        = any
+  type        = list(string)
   description = "Helm Chart Values in yaml content"
   default     = []
 }
