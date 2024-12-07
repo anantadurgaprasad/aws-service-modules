@@ -25,6 +25,7 @@ variable "irsa_role_arn" {
 variable "helm_values" {
   type        = any
   description = "Helm Chart Values in yaml content"
+  default     = []
 }
 variable "app_name" {
   description = "project name for which VPC is created"
