@@ -16,7 +16,7 @@ resource "helm_release" "aws_alb_controller" {
 
   repository       = "https://aws.github.io/eks-charts"
   chart            = "aws-load-balancer-controller"
-  create_namespace = var.namespace != "kube-system" ? var.namespace : "kube-system"
+  create_namespace = var.namespace != "kube-system" ? true : false
   version          = var.controller_version
   namespace        = var.namespace
 
