@@ -3,9 +3,13 @@ IAM role for aws-node ( VPC CNI pods)
 This is role will be used by service account aws-node associated to aws-node pods which
 needs IAM permissions to spin up eks node
 ===========*/
-
+data "aws_ssm_parameter" "eks_ami_release_version" {
+  name = "/aws/service/eks/optimized-ami/${aws_eks_cluster.eks_cluster.version}/amazon-linux-2023/x86_64/standard/recommended/release_version"
+}
 resource "aws_eks_node_group" "eks_node" {
   cluster_name    = aws_eks_cluster.eks_cluster.name
+  version         = aws_eks_cluster.eks_cluster.version
+  release_version = nonsensitive(data.aws_ssm_parameter.eks_ami_release_version.value)
   node_group_name = "${var.environment}-${var.app_name}-eks-node"
   node_role_arn   = aws_iam_role.eks_node_role.arn
   subnet_ids      = var.subnet_ids
