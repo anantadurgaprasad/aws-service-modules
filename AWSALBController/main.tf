@@ -1,4 +1,3 @@
-data "aws_caller_identity" "current" {}
 data "http" "alb_policy" {
   url = "https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/${helm_release.aws_alb_controller.metadata[0].app_version}/docs/install/iam_policy.json"
 }
@@ -16,7 +15,7 @@ module "irsa" {
   namespace       = var.namespace
   service_account = var.service_account
   role_name       = "${var.environment}-${var.app_name}-alb-controller-irsa"
-  policy_arns     = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/AWSLoadBalancerControllerIAMPolicy"]
+  policy_arns     = [aws_iam_policy.controller_policy.arn]
 
 }
 
