@@ -18,7 +18,7 @@ data "aws_iam_policy_document" "instance_assume_role_policy" {
     condition {
       test     = "StringEquals"
       variable = "${var.oidc_provider}:sub"
-      values   = ["system:serviceaccount:${var.namespace}:${var.service_account}"]
+      values   = var.service_account
     }
   }
 }

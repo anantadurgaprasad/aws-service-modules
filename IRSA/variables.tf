@@ -2,13 +2,10 @@ variable "oidc_provider" {
   description = "OIDC provider value"
   type        = string
 }
-variable "namespace" {
-  description = "Namespace of service account associated with IRSA"
-  type        = string
-}
+
 variable "service_account" {
-  description = "Service Account associated with IRSA"
-  type        = string
+  description = "Service Account with namespace format (['system:serviceaccount:namespace:service_account']) associated with IRSA"
+  type        = list(string)
 
 }
 variable "role_name" {
