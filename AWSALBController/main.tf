@@ -12,8 +12,8 @@ module "irsa" {
   source        = "git::https://github.com/anantadurgaprasad/aws-service-modules.git//IRSA"
   oidc_provider = replace(var.oidc_url, "https://", "")
 
-  namespace       = var.namespace
-  service_account = var.service_account
+
+  service_account = var.irsa_service_account
   role_name       = "${var.environment}-${var.app_name}-alb-controller-irsa"
   policy_arns     = [aws_iam_policy.controller_policy.arn]
 
